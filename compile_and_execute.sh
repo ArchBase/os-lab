@@ -1,4 +1,2 @@
-echo compiling
-cc main.c
-echo executing
+cc sjf.c
 ./a.out
