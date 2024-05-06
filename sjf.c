@@ -25,19 +25,25 @@ struct process current_process;
 struct process ready_queue[10];
 int ready_queue_index = 0;
 
-void swap(struct process *p1, struct process *p2){
-    struct process temp;
-    temp = *p1;
-    *p1 = *p2;
-    *p2 = temp;
+void print_array(){
+    int i;
+    printf("\nReady queue:\n");
+    for(i=0; i<ready_queue_index; i++){
+        printf("%d, ", ready_queue[i].burst_time);
+    }
 }
+
 
 void sort_ready_queue_on_burst_time(){
     int i, j;
-    for(i=0; i<num_of_processes-1; i++){
-        for(j=0; j<num_of_processes-i-1; j++){
+    struct process temp;
+    for(i=0; i<ready_queue_index-1; i++){
+        for(j=0; j<ready_queue_index-i-1; j++){
             if(ready_queue[j].burst_time > ready_queue[j+1].burst_time){
-                swap(&ready_queue[j], &ready_queue[j+1]);
+                //printf("swapping");
+                temp = ready_queue[j];
+                ready_queue[j] = ready_queue[j+1];
+                ready_queue[j+1] = temp;
             }
         }
     }
@@ -45,32 +51,23 @@ void sort_ready_queue_on_burst_time(){
 
 void update_ready_queue(){
     int i;
-    
     for(i=0; i<num_of_processes; i++){
-        
-        if(process_queue[i].id != -1){
-            //printf("updatign ready queue%d\n", process_queue[i].id);    
-            if(process_queue[i].arrival_time <= current_time){
-                ready_queue[ready_queue_index] = process_queue[i];
-                ready_queue_index += 1;
-                process_queue[i].id = -1;
-            }
+        if(process_queue[i].id != -1 && process_queue[i].arrival_time <= current_time){
+            ready_queue[ready_queue_index] = process_queue[i];
+            ready_queue_index += 1;
+            process_queue[i].id = -1;
         }
     }
     sort_ready_queue_on_burst_time();
 }
 
-void clear_ready_queue(){
-    ready_queue_index = 0;
-}
-
-void shift_left(){// change shift array to ready queue
+void shift_left(){
     int i;
-    for(i=0; i<num_of_processes-1; i++){
+    for(i=0; i<ready_queue_index-1; i++){
         //printf("hai");
         ready_queue[i] = ready_queue[i+1];
-        ready_queue_index--;
     }
+    ready_queue_index -= 1;
 }
 
 void execute_process(){
@@ -88,28 +85,22 @@ void calculate_average(){
     avg_tat += current_process.tat;
 }
 
-int is_empty(){
-    if(ready_queue_index <= 0){
-        return 1;
-    }
-    else{
-        return 0;
-    }
-}
 
 int run_next_frame(){
     update_ready_queue();
-    if(is_empty() == 1){
-        current_time += 1;
-        return 0;
-    }
-    else{
-        //printf("executing");
+    //print_array();
+    if(ready_queue_index > 0){
+        //printf("exe: [ %d ]", ready_queue_index);
         current_process = ready_queue[0];
-        clear_ready_queue();
+        shift_left();
         execute_process();
         calculate_average();
         return 1;
+    }
+    else{
+        //printf("time: %d", ready_queue_index);
+        current_time += 1;
+        return 0;
     }
 }
 
