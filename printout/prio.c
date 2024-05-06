@@ -4,22 +4,24 @@
 struct process{
     int arrival_time;
     int burst_time;
+    int priority;
     int complete_time;
     int start_time;
     int id;
     float wait_time;
     float tat;
 }process_queue[10]={
-    {.id = 1, .arrival_time = 0, .burst_time = 4},
-    {.id = 2, .arrival_time = 0, .burst_time = 2},
-    {.id = 3, .arrival_time = 3, .burst_time = 1},
-    {.id = 4, .arrival_time = 5, .burst_time = 5},
-    {.id = 5, .arrival_time = 6, .burst_time = 3},
-    {.id = 6, .arrival_time = 8, .burst_time = 1}
+    {.id = 1, .arrival_time = 0, .burst_time = 3, .priority = 2},
+    {.id = 2, .arrival_time = 2, .burst_time = 5, .priority = 6},
+    {.id = 3, .arrival_time = 1, .burst_time = 4, .priority = 3},
+    {.id = 4, .arrival_time = 4, .burst_time = 2, .priority = 5},
+    {.id = 5, .arrival_time = 6, .burst_time = 9, .priority = 7},
+    {.id = 6, .arrival_time = 5, .burst_time = 4, .priority = 4},
+    {.id = 7, .arrival_time = 7, .burst_time = 10, .priority = 10}
 };
 
 int current_time = 0;
-int num_of_processes = 6;
+int num_of_processes = 7;
 float avg_wait_time = 0, avg_tat = 0;
 struct process current_process;
 struct process ready_queue[10];
@@ -39,7 +41,7 @@ void sort_ready_queue_on_priority(){
     struct process temp;
     for(i=0; i<ready_queue_index-1; i++){
         for(j=0; j<ready_queue_index-i-1; j++){
-            if(ready_queue[j].burst_time > ready_queue[j+1].burst_time){
+            if(ready_queue[j].priority > ready_queue[j+1].priority){
                 //printf("swapping");
                 temp = ready_queue[j];
                 ready_queue[j] = ready_queue[j+1];

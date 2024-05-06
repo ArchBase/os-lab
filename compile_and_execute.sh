@@ -1,2 +1,2 @@
-cc sjf.c
+cc prio.c
 ./a.out
