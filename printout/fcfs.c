@@ -3,14 +3,13 @@ struct process{
     int arrival_time, burst_time, complete_time, start_time, id;
     float wait_time, tat;
 }ready_queue[10]={// sorted on arrival time
-    {.id = 1, .arrival_time = 0, .burst_time = 3},
-    {.id = 2, .arrival_time = 2, .burst_time = 2},
-    {.id = 3, .arrival_time = 4, .burst_time = 4},
-    {.id = 4, .arrival_time = 5, .burst_time = 5},
-    {.id = 5, .arrival_time = 6, .burst_time = 2},
-    {.id = 6, .arrival_time = 8, .burst_time = 1}
+    {.id = 1, .arrival_time = 0, .burst_time = 6},
+    {.id = 2, .arrival_time = 0, .burst_time = 4},
+    {.id = 3, .arrival_time = 0, .burst_time = 1},
+    {.id = 4, .arrival_time = 0, .burst_time = 3},
+    {.id = 5, .arrival_time = 0, .burst_time = 7}
 };
-int current_time = 0, num_of_processes = 6;
+int current_time = 0, num_of_processes = 5;
 float avg_wait_time = 0, avg_tat = 0;
 struct process current_process;
 void shift_left(){
