@@ -8,7 +8,7 @@ void main(){
     int i, shmid;
     char buff[100];
     void *sm;
-    shmid = shmget((key_t)2345, 1024, 0666);
+    shmid = shmget((key_t)2345, 1024, 0666|IPC_CREAT);
     printf("Key: %d", shmid);
     sm = shmat(shmid, NULL, 0);
     printf("Attached at: %p", sm);
