@@ -36,13 +36,13 @@ int get_next_request_index(){
 
 int update_direction(int used_index){
     if(direction){
-        request[used_index] = max_head+1;
+        request[used_index] = -1;
         if(request[used_index] == 0){
             direction = 0;
         }
     }
     else{
-        request[used_index] = -1;
+        request[used_index] = max_head+1;
         if(request[used_index] == max_head){
             direction = 1;
         }
